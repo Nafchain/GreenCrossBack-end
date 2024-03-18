@@ -4,7 +4,8 @@
   "description": "greencross proyect backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./Controller/testController.js"
   },
   "author": "Noelia Ruiz López",
   "license": "ISC"
