@@ -8,12 +8,15 @@ var secret = 'token';
 exports.createToken = function(admin){
 	var payload = {
         //How declarate the variables to the admin login.
-        // dni: admin.dni,
-		// nombre: admin.nombre,
-        // telefono: admin.telefono,
-        // contrasenia: admin.contrasenia,
-        // sexo: admin.sexo,
-        // grupo: admin.grupo,
+        firstName: admin.dni,
+		lastName: admin.nombre,
+        email: admin.telefono,
+        title: admin.contrasenia,
+        otherTitle: admin.sexo,
+        companyName: admin.grupo,
+        industry: admin.contrasenia,
+        otherIndustry: admin.sexo,
+        companySize: admin.grupo,
         // iat: moment().unix(),
         //This is for the expiration account. I think that this can be delete witout affect nothing but
         //i need search it.

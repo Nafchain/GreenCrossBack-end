@@ -1,51 +1,46 @@
 const mongoose = require('mongoose');
-const adminSchema = mongoose.Schema({
+const questionSchema = mongoose.Schema({
 
-    firstName: {
+    question: {
         type: String,
         required: true,
     },
 
-    lastName: {
+    questionType: {
         type: String,
         required: true,
     },
 
-    email: {
+    agree: {
+        type: Boolean,
+        required: true,
+    },
+
+    subsection: {
         type: String,
         required: true,
     },
 
-    title: {
+    subsectionTitle: {
         type: String,
         required: true,
     },
 
-    otherTitle: {
+    subsectionIntent: {
         type: String,
         required: true,
     },
 
-    companyName: {
+    subsectionMetric: {
         type: String,
         required: true,
     },
 
-    industry: {
-        type: String,
-        required: true,
-    },
-
-    otherIndustry: {
-        type: String,
-        required: true,
-    },
-
-    companySize: {
+    subsectionDescription: {
         type: String,
         required: true,
     }
         
 });
 
-module.exports = mongoose.model('admin', adminSchema);
+module.exports = mongoose.model('question', questionSchema);
