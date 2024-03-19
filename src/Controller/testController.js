@@ -66,36 +66,36 @@ async function getUserForm(req, res) {
     }
 }
 
-
 async function getUserTest(req, res) {
-    try {
-        // Obtener el ID del usuario desde la solicitud
-        const { id } = req.body;
+  try {
+      // Obtener el ID del usuario desde la solicitud
+      const { id } = req.query;
 
-        // Verificar si userId está definido
-        if (!id) {
-            throw new Error('Invalid parameter. Make sure userId is defined.');
-        }
+      // Verificar si userId está definido
+      if (!id) {
+          throw new Error('Invalid parameter. Make sure userId is defined.');
+      }
 
-        // Buscar en la tabla tests del answerInfo por el ID del usuario
-        const userTest = await answerModel.findOne({ id: id });
+      // Buscar en la tabla tests del answerInfo por el ID del usuario
+      const userTest = await answerModel.findOne({ id: id });
 
-        // Verificar si se encontraron resultados para el usuario
-        if (!userTest) {
-            throw new Error('No test results found for the user.');
-        }
+      // Verificar si se encontraron resultados para el usuario
+      if (!userTest) {
+          throw new Error('No test results found for the user.');
+      }
 
-        // Respuesta exitosa con los resultados del test del usuario
-        return res.status(200).json(userTest);
-    } catch (error) {
-        // Manejar errores
-        console.error(error);
-        return res.status(500).json({
-            message: 'Error al obtener los resultados del test del usuario',
-            error: error.message
-        });
-    }
+      // Respuesta exitosa con los resultados del test del usuario
+      return res.status(200).json(userTest);
+  } catch (error) {
+      // Manejar errores
+      console.error(error);
+      return res.status(500).json({
+          message: 'Error al obtener los resultados del test del usuario',
+          error: error.message
+      });
+  }
 }
+
 
 module.exports = { setFormResults, getUserForm, getUserTest };
 
