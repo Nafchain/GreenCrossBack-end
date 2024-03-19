@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userJSONSchema = mongoose.Schema({
-    jsonData: {
+    user: {
         type: mongoose.Schema.Types.Mixed,
         required: true
     }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const answerSchema = mongoose.Schema({
 
-    jsonData: {
+    questions: {
         type: mongoose.Schema.Types.Mixed,
         required: true
     }
