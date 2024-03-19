@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./Controller/testController.js",
-    "build": "node ./Controller/testController"
+    "build": "node ./Controller/testController.js --output public"
   },
   "author": "Noelia Ruiz López",
   "license": "ISC",
