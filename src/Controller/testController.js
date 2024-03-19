@@ -1,12 +1,24 @@
 const http = require('http');
 const url = require('url');
-const fs = require('fs');
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
   // Parse the request URL
   const parsedUrl = url.parse(req.url, true);
   const path = parsedUrl.pathname;
+
+  // Set CORS headers for all requests
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle OPTIONS requests
+  if (req.method === 'OPTIONS') {
+    // Respond with 200 OK status for preflight requests
+    res.writeHead(200);
+    res.end();
+    return;
+  }
 
   // Route the request based on the URL
   if (path === '/endpoint' && req.method === 'POST') {

@@ -8,5 +8,8 @@
     "start": "node ./Controller/testController.js"
   },
   "author": "Noelia Ruiz López",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
 }
