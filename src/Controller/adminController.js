@@ -48,7 +48,7 @@ exports.loginUser = async (req, res) => {
 }
 
 //registration in the platform
-exports.crearadmin = async (req, res) => {
+exports.createAdmin = async (req, res) => {
 	var params = req.body;
 	var admin = new adminModel();
 	let expresionregular = /^\d{8}[a-zA-Z]$/;//validate the dni

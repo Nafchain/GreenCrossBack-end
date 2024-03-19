@@ -1,27 +1,14 @@
-const dataBase = require('mongoose');
+const mongoose = require('mongoose');
 
-require('dotenv').config({
-    path: 'variables.env'
+// Intentar conectar a la base de datos
+mongoose.connect('mongodb+srv://nafchainadm:keeIPU3o5Wzn6V5H@cluster0.rtmf53d.mongodb.net/', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  socketTimeoutMS: 30000, 
+})
+.then(() => {
+  console.log('Conexión establecida con la base de datos');
+})
+.catch((error) => {
+  console.error('Error de conexión a la base de datos:', error);
 });
-
-const conectDB = async () => {
-
-    try {
-
-        await dataBase.connect(process.env.DB_dataBase, {
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        })
-
-        console.log('database conected');
-
-    } catch (error) {
-
-        console.log(error);
-        process.exit(1);
-    }
-
-}
-
-module.exports = conectDB;
