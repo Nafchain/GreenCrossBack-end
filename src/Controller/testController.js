@@ -49,8 +49,6 @@ async function setFormResults(req, res) {
     }
 }
 
-module.exports = { setFormResults };
-
 async function getUserForm(req, res) {
     try {
         // Obtener todos los usuarios de la base de datos
@@ -68,7 +66,6 @@ async function getUserForm(req, res) {
     }
 }
 
-module.exports = { getUserForm };
 
 async function getUserTest(req, res) {
     try {
@@ -100,7 +97,7 @@ async function getUserTest(req, res) {
     }
 }
 
-module.exports = { getUserTest };
+module.exports = { setFormResults, getUserForm, getUserTest };
 
 // // Iniciar el servidor en el puerto 3000
 // const port = 3000;
