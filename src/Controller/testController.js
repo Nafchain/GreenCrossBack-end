@@ -1,157 +1,109 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const answerModel = require("../Model/answerModel");
 const userInfoModel = require("../Model/userInfoModel");
+const answerModel = require("../Model/answerModel");
 
-// Crear una aplicación Express
-const app = express();
+// Controlador para manejar las solicitudes POST a /endpoint
+async function setFormResults(req, res) {
+    try {
+        // Obtener el JSON de la solicitud
+        const { userInfo, answerInfo } = req.body;
 
-// Utilizar el middleware body-parser para analizar el cuerpo de las solicitudes
-app.use(bodyParser.json());
+        // Verificar si al menos uno de los datos está definido
+        if (!userInfo && !answerInfo) {
+            throw new Error('Invalid JSON data. Make sure userInfo or answerInfo is defined.');
+        }
 
-// Ruta para manejar las solicitudes POST a /endpoint
-app.post('/endpoint', async (req, res) => {
-  try {
-    console.log('Llega 1');
-    // Obtener el JSON de la solicitud
-    const { userInfo } = req.body;
+        // Guardar datos de userInfo si está definido
+        if (userInfo) {
+            // Crear una instancia del modelo userInfoModel y asignar los datos
+            const saveUserInfo = new userInfoModel({
+                user: userInfo.user,
+            });
 
-    // Verificar si userInfo y userInfo.jsonData están definidos
-    if (!userInfo || !userInfo.jsonData) {
-      throw new Error('Invalid JSON data. Make sure userInfo and userInfo.jsonData are defined.');
+            // Guardar la instancia en la base de datos
+            await saveUserInfo.save();
+        }
+
+        // Guardar datos de answerInfo si está definido
+        if (answerInfo) {
+            // Crear una instancia del modelo answerModel y asignar los datos
+            const saveAnswerInfo = new answerModel({
+                questions: answerInfo.questions,
+                id: userInfo.user.id
+            });
+
+            // Guardar la instancia en la base de datos
+            await saveAnswerInfo.save();
+        }
+
+        // Respuesta exitosa
+        return res.status(200).json({
+            message: 'Datos guardados exitosamente'
+        });
+    } catch (error) {
+        // Manejar errores
+        console.error(error);
+        return res.status(500).json({
+            message: 'Error al guardar los datos',
+            error: error.message
+        });
     }
-
-    // Crear una instancia del modelo userInfoModel y asignar los datos
-    const saveUserInfo = new userInfoModel({
-      jsonData: userInfo.jsonData
-    });
-
-    // Guardar la instancia en la base de datos
-    await saveUserInfo.save();
-
-    // Respuesta exitosa
-    console.log('Llega');
-    return res.status(200).json({
-      message: 'Datos guardados exitosamente'
-    });
-  } catch (error) {
-    // Manejar errores
-    console.error(error);
-    return res.status(500).json({
-      message: 'Error al guardar los datos',
-      error: error.message
-    });
-  }
-});
-
-// Ruta para manejar las solicitudes POST a /endpoint
-app.post('/setFormularioResuelto', async (req, res) => {
-  try {
-    console.log('Llega 1');
-    
-    // Obtener los JSON de la solicitud
-    const { userInfo, respuestas } = req.body;
-
-    // Verificar si userInfo y respuestas están definidos
-    if (!userInfo || !respuestas) {
-      throw new Error('Invalid JSON data. Make sure userInfo and respuestas are defined.');
-    }
-
-    // Log userInfo and respuestas
-    console.log('UserInfo:', userInfo);
-    console.log('Respuestas:', respuestas);
-
-    // You can continue with other operations here if needed
-
-    // Respuesta exitosa
-    console.log('Llega');
-    return res.status(200).json({
-      message: 'Datos guardados exitosamente'
-    });
-  } catch (error) {
-    // Manejar errores
-    console.error(error);
-    return res.status(500).json({
-      message: 'Error al guardar los datos',
-      error: error.message
-    });
-  }
-});
-
-
-const faker = require('faker');
-
-// Function to generate mock data for a person
-function generateMockPerson() {
-  return {
-    id: faker.random.uuid(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    title: faker.name.jobTitle(),
-    companyName: faker.company.companyName(),
-    industry: faker.company.bs(),
-    companySize: faker.random.arrayElement(['1-10', '11-50', '51-200', '201-500', '501-1000', '1000-5000']),
-    acceptTerms: true
-  };
 }
 
-// Ruta para manejar las solicitudes GET a /getFormulariosResueltos
-app.get('/getFormulariosResueltos', async (req, res) => {
-  try {
-    console.log('Llega 1');
+module.exports = { setFormResults };
 
-    // Generate 5 mock people
-    const people = Array.from({ length: 5 }, generateMockPerson);
+async function getUserForm(req, res) {
+    try {
+        // Obtener todos los usuarios de la base de datos
+        const users = await userInfoModel.find();
 
-    // Respuesta exitosa con la lista de personas aleatorias
-    return res.status(200).json(people);
-  } catch (error) {
-    // Manejar errores
-    console.error(error);
-    return res.status(500).json({
-      message: 'Error al generar los datos mock',
-      error: error.message
-    });
-  }
-});
-
-
-// Ruta para manejar las solicitudes POST a /endpoint
-app.get('/getFormularioRelleno', async (req, res) => {
-  try {
-    console.log('Llega 1');
-    // Obtener el parámetro de la solicitud
-    const { userId } = req.query;
-
-    // Verificar si userId está definido
-    if (!userId) {
-      throw new Error('Invalid parameter. Make sure userId is defined.');
+        // Respuesta exitosa con los usuarios recuperados
+        return res.status(200).json(users);
+    } catch (error) {
+        // Manejar errores
+        console.error(error);
+        return res.status(500).json({
+            message: 'Error al obtener los usuarios',
+            error: error.message
+        });
     }
+}
 
-    // Mocked JSON response
-    const mockedResponse = { answer: 'ok' };
+module.exports = { getUserForm };
 
-    // Respuesta exitosa con la respuesta mockeada
-    console.log('Llega');
-    return res.status(200).json(mockedResponse);
-  } catch (error) {
-    // Manejar errores
-    console.error(error);
-    return res.status(500).json({
-      message: 'Error al obtener los datos',
-      error: error.message
-    });
-  }
-});
+async function getUserTest(req, res) {
+    try {
+        // Obtener el ID del usuario desde la solicitud
+        const { userId } = req.body;
 
+        // Verificar si userId está definido
+        if (!userId) {
+            throw new Error('Invalid parameter. Make sure userId is defined.');
+        }
 
+        // Buscar en la tabla tests del answerInfo por el ID del usuario
+        const userTest = await answerModel.findOne({ id: userId });
 
+        // Verificar si se encontraron resultados para el usuario
+        if (!userTest) {
+            throw new Error('No test results found for the user.');
+        }
 
+        // Respuesta exitosa con los resultados del test del usuario
+        return res.status(200).json(userTest);
+    } catch (error) {
+        // Manejar errores
+        console.error(error);
+        return res.status(500).json({
+            message: 'Error al obtener los resultados del test del usuario',
+            error: error.message
+        });
+    }
+}
 
+module.exports = { getUserTest };
 
 // // Iniciar el servidor en el puerto 3000
-// const port = 4400;
+// const port = 3000;
 // app.listen(port, () => {
 //   console.log(`El servidor está corriendo en el puerto ${port}`);
 // });
