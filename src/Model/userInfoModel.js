@@ -8,3 +8,4 @@ const userJSONSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('user', userJSONSchema);
+
