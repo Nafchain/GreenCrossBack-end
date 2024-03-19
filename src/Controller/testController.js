@@ -1,45 +1,51 @@
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const answerModel = require("../Model/answerModel");
+const userInfoModel = require("../Model/userInfoModel");
 
-// Create an HTTP server
-const server = http.createServer((req, res) => {
-  // Parse the request URL
-  const parsedUrl = url.parse(req.url, true);
-  const path = parsedUrl.pathname;
+// Crear una aplicación Express
+const app = express();
 
-  // Route the request based on the URL
-  if (path === '/endpoint' && req.method === 'POST') {
-    // Handle POST requests to /endpoint
-    let requestBody = '';
-    req.on('data', (chunk) => {
-      requestBody += chunk.toString();
+// Utilizar el middleware body-parser para analizar el cuerpo de las solicitudes
+app.use(bodyParser.json());
+
+// Ruta para manejar las solicitudes POST a /endpoint
+app.post('/endpoint', async (req, res) => {
+  try {
+    console.log('Llega 1');
+    // Obtener el JSON de la solicitud
+    const { userInfo } = req.body;
+
+    // Verificar si userInfo y userInfo.jsonData están definidos
+    if (!userInfo || !userInfo.jsonData) {
+      throw new Error('Invalid JSON data. Make sure userInfo and userInfo.jsonData are defined.');
+    }
+
+    // Crear una instancia del modelo userInfoModel y asignar los datos
+    const saveUserInfo = new userInfoModel({
+      jsonData: userInfo.jsonData
     });
-    req.on('end', () => {
-      // Process the request body
-      try {
-        const jsonData = JSON.parse(requestBody);
-        // Here, you can do whatever you want with the JSON data
-        // For example, you can save it to a file or a database
-        // In this example, we'll just log it
-        console.log('Received JSON data:', jsonData);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Data received successfully' }));
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON' }));
-      }
+
+    // Guardar la instancia en la base de datos
+    await saveUserInfo.save();
+
+    // Respuesta exitosa
+    console.log('Llega');
+    return res.status(200).json({
+      message: 'Datos guardados exitosamente'
     });
-  } else {
-    // Handle other requests or invalid endpoints
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not found');
+  } catch (error) {
+    // Manejar errores
+    console.error(error);
+    return res.status(500).json({
+      message: 'Error al guardar los datos',
+      error: error.message
+    });
   }
 });
 
-// Start the server
+// Iniciar el servidor en el puerto 3000
 const port = 3000;
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(port, () => {
+  console.log(`El servidor está corriendo en el puerto ${port}`);
 });
