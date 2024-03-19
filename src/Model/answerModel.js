@@ -4,6 +4,11 @@ const answerSchema = mongoose.Schema({
     questions: {
         type: mongoose.Schema.Types.Mixed,
         required: true
+    },
+
+    id: {
+        type: String,
+        required: true
     }
         
 });
