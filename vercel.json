@@ -9,8 +9,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "testController.js"
+        "dest": "index.js"
       }
-    ],
-    "public": "/public"
+    ]
   }
