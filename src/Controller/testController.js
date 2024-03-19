@@ -70,15 +70,15 @@ async function getUserForm(req, res) {
 async function getUserTest(req, res) {
     try {
         // Obtener el ID del usuario desde la solicitud
-        const { userId } = req.body;
+        const { id } = req.body;
 
         // Verificar si userId está definido
-        if (!userId) {
+        if (!id) {
             throw new Error('Invalid parameter. Make sure userId is defined.');
         }
 
         // Buscar en la tabla tests del answerInfo por el ID del usuario
-        const userTest = await answerModel.findOne({ id: userId });
+        const userTest = await answerModel.findOne({ id: id });
 
         // Verificar si se encontraron resultados para el usuario
         if (!userTest) {

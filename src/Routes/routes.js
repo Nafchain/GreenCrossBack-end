@@ -6,9 +6,9 @@ const testController = require('../Controller/testController');
 router.post('/setFormResults', testController.setFormResults);
 
 // Define the POST route for '/getUserForm' and pass the getUserForm controller as the callback function
-router.post('/getUserForm', testController.getUserForm);
+router.get('/getUserForm', testController.getUserForm);
 
 // Define the POST route for '/getUserTest' and pass the getUserTest controller as the callback function
-router.post('/getUserTest', testController.getUserTest);
+router.get('/getUserTest', testController.getUserTest);
 
 module.exports = router;
