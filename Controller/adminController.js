@@ -10,7 +10,7 @@ async function loginUser(req, res) {
         const password = params.password;
 
         const user = await adminModel.findOne({ username: name });
-		const id = user._id
+		// const id = user._id
 		console.log('user '+user);
 		// updatePassword(id, password);
 
