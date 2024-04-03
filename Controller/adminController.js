@@ -6,10 +6,10 @@ const token = require('../Services/token');
 async function loginUser(req, res) {
     try {
         const params = req.body;
-        const name = params.firstName;
+        const name = params.username;
         const password = params.password;
 
-        const user = await adminModel.findOne({ firstName: name });
+        const user = await adminModel.findOne({ username: name });
 		const id = user._id
 		console.log('user '+user);
 		// updatePassword(id, password);

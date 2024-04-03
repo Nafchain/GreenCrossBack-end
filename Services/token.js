@@ -5,7 +5,7 @@ var secret = 'token';
 exports.createToken = function(admin){
 	var payload = {
         //How declarate the variables to the admin login.
-        firstName: admin.firstName,
+        username: admin.username,
         password: admin.password,
         iat: moment().unix()
 	};
