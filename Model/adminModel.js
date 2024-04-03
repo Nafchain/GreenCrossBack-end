@@ -9,6 +9,11 @@ const adminSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+
+    gettoken: {
+        type: boolean,
+        required: true,
     }
         
 });
