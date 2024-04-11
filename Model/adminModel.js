@@ -12,7 +12,7 @@ const adminSchema = mongoose.Schema({
     },
 
     gettoken: {
-        type: boolean,
+        type: Boolean,
         required: true,
     }
         
