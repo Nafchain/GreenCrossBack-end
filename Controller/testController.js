@@ -101,34 +101,40 @@ async function updateReviewStatus(req, res) {
         // Obtener el ID del usuario desde la solicitud
         const { userId } = req.body;
 
-        // Verificar si userId está definido
+        // Verificar si el ID del usuario está definido
         if (!userId) {
             throw new Error('Invalid parameter. Make sure userId is defined.');
+        }
+
+        // Buscar el usuario en la base de datos
+        const user = await userInfoModel.findOne({ "user.id": userId });
+
+        // Verificar si se encontró el usuario
+        if (!user) {
+            throw new Error('User not found.');
         }
 
         // Obtener la fecha del sistema
         const currentDate = new Date();
 
         // Actualizar el booleano review a true y guardar la fecha del sistema en la tabla users
-        await userInfoModel.updateOne(
-            { _id: userId },
-            { $set: { review: true, createdDate: currentDate } }
-        );
+        user.review = true;
+        user.createdDate = currentDate;
+        await user.save();
 
         // Respuesta exitosa
         return res.status(200).json({
-            message: 'Review se ha actualizado a true y la fecha del sistema se ha guardado exitosamente.'
+            message: 'El booleano review se ha actualizado a true y la fecha del sistema se ha guardado exitosamente.'
         });
     } catch (error) {
         // Manejar errores
         console.error(error);
         return res.status(500).json({
-            message: 'Error al actualizar review y guardar la fecha del sistema',
+            message: 'Error al actualizar el booleano review y guardar la fecha del sistema',
             error: error.message
         });
     }
 }
-
 
 module.exports = { setFormResults, getUserForm, getUserTest, updateReviewStatus };
 
