@@ -21,4 +21,7 @@ router.post('/encryptPassword', adminController.encryptPassword);
 // Define the POST route for '/updatePassword' and pass the updatePassword controller as the callback function
 router.post('/updatePassword', adminController.updatePassword);
 
+// Define the POST route for '/updateReviewStatus' and pass the updateReviewStatus controller as the callback function
+router.post('/updateReviewStatus', testController.updateReviewStatus);
+
 module.exports = router;

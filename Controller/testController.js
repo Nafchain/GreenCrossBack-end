@@ -96,8 +96,41 @@ async function getUserTest(req, res) {
   }
 }
 
+async function updateReviewStatus(req, res) {
+    try {
+        // Obtener el ID del usuario desde la solicitud
+        const { userId } = req.body;
 
-module.exports = { setFormResults, getUserForm, getUserTest };
+        // Verificar si userId está definido
+        if (!userId) {
+            throw new Error('Invalid parameter. Make sure userId is defined.');
+        }
+
+        // Obtener la fecha del sistema
+        const currentDate = new Date();
+
+        // Actualizar el booleano review a true y guardar la fecha del sistema en la tabla users
+        await userInfoModel.updateOne(
+            { _id: userId },
+            { $set: { review: true, createdDate: currentDate } }
+        );
+
+        // Respuesta exitosa
+        return res.status(200).json({
+            message: 'Review se ha actualizado a true y la fecha del sistema se ha guardado exitosamente.'
+        });
+    } catch (error) {
+        // Manejar errores
+        console.error(error);
+        return res.status(500).json({
+            message: 'Error al actualizar review y guardar la fecha del sistema',
+            error: error.message
+        });
+    }
+}
+
+
+module.exports = { setFormResults, getUserForm, getUserTest, updateReviewStatus };
 
 // // Iniciar el servidor en el puerto 3000
 // const port = 3000;
