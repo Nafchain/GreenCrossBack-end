@@ -84,7 +84,7 @@ async function getUserTest(req, res) {
           throw new Error('No test results found for the user.');
       }
 
-      // Respuesta exitosa con los resultados del test del usuario
+      // Respuesta exitosa con los resultados del test del usuario.
       return res.status(200).json(userTest);
   } catch (error) {
       // Manejar errores
