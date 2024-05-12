@@ -8,12 +8,12 @@ const userJSONSchema = mongoose.Schema({
 
     createdDate: {
         type: Date,
-        required: true
+        required: false
     },
 
     review:{
         type: Boolean,
-        required: true
+        required: false
     }
 });
 
